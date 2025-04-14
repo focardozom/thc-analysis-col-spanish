@@ -387,7 +387,7 @@ ui <- fluidPage(
     sidebarPanel(
       numericInput("thc_value", 
                   "Enter your sample's THC %:", 
-                  value = 12.8,
+                  value = MEAN_THC,  # Set default to mean
                   min = 4,
                   max = 30,
                   step = 0.1),
@@ -407,7 +407,18 @@ server <- function(input, output) {
     y = dnorm(x, mean = MEAN_THC, sd = SD_THC)
   )
   
+  # Reactive value for validated THC input
+  valid_thc <- reactive({
+    if (is.null(input$thc_value) || is.na(input$thc_value)) {
+      return(MEAN_THC)  # Return mean if input is null or NA
+    }
+    return(input$thc_value)
+  })
+  
   output$thc_plot <- renderPlot({
+    # Use validated THC value
+    thc_value <- valid_thc()
+    
     ggplot() +
       # Plot density curve
       geom_line(data = density_data, aes(x = x, y = y), 
@@ -421,8 +432,8 @@ server <- function(input, output) {
                  linetype = "dashed", color = "#003E42ff", alpha = 0.7) +
       geom_vline(xintercept = MEAN_THC, 
                  linetype = "dashed", color = "#003E42ff") +
-      # Add user's THC value
-      geom_vline(xintercept = input$thc_value, 
+      # Add user's THC value (only if valid)
+      geom_vline(xintercept = thc_value, 
                  color = "#EEC99Bff", size = 1.5) +
       # Add labels
       annotate("text", 
@@ -445,7 +456,13 @@ server <- function(input, output) {
   })
   
   output$percentile_text <- renderText({
-    value <- input$thc_value
+    # Use validated THC value
+    value <- valid_thc()
+    
+    if (is.null(value) || is.na(value)) {
+      return("Please enter a valid THC value")
+    }
+    
     if (value < Q1_THC) {
       sprintf("Your sample's THC level (%.1f%%) is below the 25th percentile (Q1: %.1f%%)", 
              value, Q1_THC)
@@ -466,23 +483,9 @@ This interactive visualization:
 
 1. Shows the THC distribution curve
 2. Displays reference lines for Q1 (25th percentile), median, and Q3 (75th percentile)
-3. Allows users to input their sample's THC percentage
-4. Shows their value as an amber-colored vertical line on the plot
-5. Provides text feedback about where their sample falls in the distribution
-6. Uses the same color scheme as the rest of your document (#003E42ff and #EEC99Bff)
-7. Has a clean, minimal design that matches your document's style
-
-The plot will update automatically when users change the THC value, and it works well for GitHub Pages since it uses Shinylive. Users can:
-- Input any THC value between 4% and 30%
-- See exactly where their sample falls in the distribution
-- Get immediate text feedback about their sample's percentile
-- Compare their value to the population statistics
-
-Would you like me to:
-1. Adjust the plot's appearance or size?
-2. Add more statistical information?
-3. Modify the input range or step size?
-4. Add additional interactive features?
+3. Allows you to input your sample's THC percentage
+4. Shows your value as an amber-colored vertical line on the plot
+5. Provides text feedback about where your sample falls in the distribution
 
 
 :::

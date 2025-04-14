@@ -13,7 +13,7 @@ ui <- fluidPage(
     sidebarPanel(
       numericInput("thc_value", 
                   "Enter your sample's THC %:", 
-                  value = 12.8,
+                  value = MEAN_THC,  # Set default to mean
                   min = 4,
                   max = 30,
                   step = 0.1),
@@ -33,7 +33,18 @@ server <- function(input, output) {
     y = dnorm(x, mean = MEAN_THC, sd = SD_THC)
   )
   
+  # Reactive value for validated THC input
+  valid_thc <- reactive({
+    if (is.null(input$thc_value) || is.na(input$thc_value)) {
+      return(MEAN_THC)  # Return mean if input is null or NA
+    }
+    return(input$thc_value)
+  })
+  
   output$thc_plot <- renderPlot({
+    # Use validated THC value
+    thc_value <- valid_thc()
+    
     ggplot() +
       # Plot density curve
       geom_line(data = density_data, aes(x = x, y = y), 
@@ -47,8 +58,8 @@ server <- function(input, output) {
                  linetype = "dashed", color = "#003E42ff", alpha = 0.7) +
       geom_vline(xintercept = MEAN_THC, 
                  linetype = "dashed", color = "#003E42ff") +
-      # Add user's THC value
-      geom_vline(xintercept = input$thc_value, 
+      # Add user's THC value (only if valid)
+      geom_vline(xintercept = thc_value, 
                  color = "#EEC99Bff", size = 1.5) +
       # Add labels
       annotate("text", 
@@ -71,7 +82,13 @@ server <- function(input, output) {
   })
   
   output$percentile_text <- renderText({
-    value <- input$thc_value
+    # Use validated THC value
+    value <- valid_thc()
+    
+    if (is.null(value) || is.na(value)) {
+      return("Please enter a valid THC value")
+    }
+    
     if (value < Q1_THC) {
       sprintf("Your sample's THC level (%.1f%%) is below the 25th percentile (Q1: %.1f%%)", 
              value, Q1_THC)
