@@ -112,6 +112,7 @@ power_data |>
           panel.grid.major.x = element_blank(), 
           panel.grid.minor.x = element_blank())
 
+ggsave("images/thc_time_series.png", width = 6, height = 4, dpi = 300)
 ```
 
 # THC by time of data collection
@@ -131,7 +132,7 @@ power_data |>
           strip.background = element_rect(fill = "#EEC99Bff"),
           strip.text = element_text(color = "black", family = "playfair",
           face = "bold", size = 12))
-#ggsave("thc_time_series.png", width = 6, height = 4, dpi = 300)
+ggsave("images/thc_time_series.png", width = 6, height = 4, dpi = 300)
 ```
 
 This trend can be interpreted as an increase in THC levels over time, but it's important to consider potential sampling biases.^[If our data sources remained consistent throughout the collection period, we could attribute this to actual changes in cannabis cultivation practices. However, it's possible that our more recent samples disproportionately represent producers with advanced cultivation capabilities and greater resources, who can achieve higher THC concentrations.]
@@ -234,6 +235,8 @@ power_data |>
       statistic = list(all_continuous() ~ "{mean}% ({p25}% - {p75}%) min {min} max {max}"),
       digits = list(all_continuous() ~ 1)
     )
+
+ggsave("images/thc_cbd_distribution.png", width = 3, height = 3, dpi = 300)
 ```
 
 
@@ -263,7 +266,7 @@ power_data |>
           strip.text = element_text(color = "black", family = "playfair",
           face = "bold", size = 12))
 
-ggsave("mayor_4_thc_cbd_distribution.png", width = 3, height = 3, dpi = 300)
+ggsave("images/thc_cbd_distribution.png", width = 3, height = 3, dpi = 300)
 
 ```
 
@@ -334,7 +337,7 @@ power_data |>
     theme(legend.position = "none",
           plot.caption = element_text(hjust = 0, size = 10))
 
-ggsave("thc_distribution.png", width = 3, height = 3, dpi = 600)
+ggsave("images/thc_distribution.png", width = 3, height = 3, dpi = 600)
 
 ```
 
@@ -508,7 +511,7 @@ power_data |>
           strip.text = element_text(color = "black", family = "playfair",
           face = "bold", size = 12))
 
-#ggsave("mayor_4_thc_cbd_relationship.png", width = 3, height = 3, dpi = 300)
+ggsave("images/thc_cbd_relationship.png", width = 3, height = 3, dpi = 300)
 
 ```
 
@@ -579,7 +582,7 @@ power_data |>
           axis.title = element_text(family = "roboto", size = 12),
           plot.title = element_text(family = "roboto", size = 12))
 
-#ggsave("mayor_4_thc_cbd_potency_distribution.png", width = 3, height = 3, dpi = 300)
+ggsave("images/thc_cbd_potency_distribution.png", width = 3, height = 3, dpi = 300)
 ```
 
 # Summary of Findings
