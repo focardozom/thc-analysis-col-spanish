@@ -144,6 +144,7 @@ Our samples were collected from 15 different locations across Colombia, represen
 ```{r}
 # Load required packages
 library(leaflet)
+library(leaflet.extras)  # For awesome icons
 
 # Create a data frame with sample locations and their coordinates
 sample_locations <- data.frame(
@@ -158,11 +159,12 @@ sample_locations <- data.frame(
           -75.2819, -72.6498, -76.0540, -74.2095, -76.4358)
 )
 
-# Create custom icon
-cannabisIcon <- makeIcon(
-  iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-  iconWidth = 25, iconHeight = 41,
-  iconAnchorX = 12, iconAnchorY = 41
+# Create custom icon using Font Awesome cannabis leaf icon
+cannabisIcon <- makeAwesomeIcon(
+  icon = "cannabis",
+  markerColor = "green",
+  iconColor = "#003E42ff",  # Using your theme's dark green color
+  library = "fa"
 )
 
 # Create the interactive map
@@ -176,7 +178,7 @@ leaflet(sample_locations) |>
   setView(lng = -74.2973, lat = 4.5709, zoom = 6) |>
   
   # Add markers for each location
-  addMarkers(
+  addAwesomeMarkers(
     ~lon, ~lat,
     popup = ~paste0(
       "<b>", city, "</b><br>",

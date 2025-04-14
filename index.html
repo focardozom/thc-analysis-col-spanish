@@ -54,6 +54,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="index_files/libs/leaflet-binding-2.2.2/leaflet.js"></script>
 <script src="index_files/libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
 <script src="index_files/libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
+<link href="index_files/libs/leaflet-awesomemarkers-2.0.3/leaflet.awesome-markers.css" rel="stylesheet">
+<script src="index_files/libs/leaflet-awesomemarkers-2.0.3/leaflet.awesome-markers.min.js"></script>
+<link href="index_files/libs/fontawesome-4.7.0/font-awesome.min.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="custom.css">
@@ -173,8 +176,8 @@ ul.task-list li input[type="checkbox"] {
 <p>Our samples were collected from 15 different locations across Colombia, representing diverse geographical regions from coastal areas to inland territories. The interactive map below allows you to explore the sampling locations - you can zoom, pan, and click on markers to see location details.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-89b7e81912c176348757" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-89b7e81912c176348757">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,"Light",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter",null,"Dark",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["Esri.WorldImagery",null,"Satellite",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[6.2442,4.711,7.1254,3.4516,3.0371,10.3932,3.1716,5.0268,5.0687,6.2442,2.9273,7.3753,1.8479,11.2404,3.6997],[-75.5742,-74.07210000000001,-73.1198,-76.532,-76.4241,-75.4832,-76.2597,-74.02679999999999,-75.5176,-75.5812,-75.28189999999999,-72.6498,-76.054,-74.20950000000001,-76.4358],{"iconUrl":{"data":"images/marker-icon-2x-green.png","index":0},"iconWidth":25,"iconHeight":41,"iconAnchorX":12,"iconAnchorY":41},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["<b>Antioquia<\/b><br>Latitude: 6.2442<br>Longitude: -75.5742","<b>Bogotá<\/b><br>Latitude: 4.711<br>Longitude: -74.0721","<b>Bucaramanga<\/b><br>Latitude: 7.1254<br>Longitude: -73.1198","<b>Cali<\/b><br>Latitude: 3.4516<br>Longitude: -76.532","<b>Caloto<\/b><br>Latitude: 3.0371<br>Longitude: -76.4241","<b>Cartagena<\/b><br>Latitude: 10.3932<br>Longitude: -75.4832","<b>Corinto<\/b><br>Latitude: 3.1716<br>Longitude: -76.2597","<b>Cundinamarca<\/b><br>Latitude: 5.0268<br>Longitude: -74.0268","<b>Manizales<\/b><br>Latitude: 5.0687<br>Longitude: -75.5176","<b>Medellín<\/b><br>Latitude: 6.2442<br>Longitude: -75.5812","<b>Neiva<\/b><br>Latitude: 2.9273<br>Longitude: -75.2819","<b>Pamplona<\/b><br>Latitude: 7.3753<br>Longitude: -72.6498","<b>Pitalito<\/b><br>Latitude: 1.8479<br>Longitude: -76.054","<b>Santa Marta<\/b><br>Latitude: 11.2404<br>Longitude: -74.2095","<b>Vijes<\/b><br>Latitude: 3.6997<br>Longitude: -76.4358"],null,null,null,["Antioquia","Bogotá","Bucaramanga","Cali","Caloto","Cartagena","Corinto","Cundinamarca","Manizales","Medellín","Neiva","Pamplona","Pitalito","Santa Marta","Vijes"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Light","Dark","Satellite"],[],{"collapsed":false,"autoZIndex":true,"position":"topright"}]},{"method":"addLegend","args":[{"colors":["#003E42"],"labels":["Sample Location"],"na_color":null,"na_label":"NA","opacity":0.7,"position":"bottomright","type":"unknown","title":null,"extra":null,"layerId":null,"className":"info legend","group":null}]}],"setView":[[4.5709,-74.29730000000001],6,[]],"limits":{"lat":[1.8479,11.2404],"lng":[-76.532,-72.6498]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-e7af2ec247c6233d0961" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-e7af2ec247c6233d0961">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,"Light",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter",null,"Dark",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["Esri.WorldImagery",null,"Satellite",{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addAwesomeMarkers","args":[[6.2442,4.711,7.1254,3.4516,3.0371,10.3932,3.1716,5.0268,5.0687,6.2442,2.9273,7.3753,1.8479,11.2404,3.6997],[-75.5742,-74.07210000000001,-73.1198,-76.532,-76.4241,-75.4832,-76.2597,-74.02679999999999,-75.5176,-75.5812,-75.28189999999999,-72.6498,-76.054,-74.20950000000001,-76.4358],{"icon":"cannabis","markerColor":"green","iconColor":"#003E42ff","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["<b>Antioquia<\/b><br>Latitude: 6.2442<br>Longitude: -75.5742","<b>Bogotá<\/b><br>Latitude: 4.711<br>Longitude: -74.0721","<b>Bucaramanga<\/b><br>Latitude: 7.1254<br>Longitude: -73.1198","<b>Cali<\/b><br>Latitude: 3.4516<br>Longitude: -76.532","<b>Caloto<\/b><br>Latitude: 3.0371<br>Longitude: -76.4241","<b>Cartagena<\/b><br>Latitude: 10.3932<br>Longitude: -75.4832","<b>Corinto<\/b><br>Latitude: 3.1716<br>Longitude: -76.2597","<b>Cundinamarca<\/b><br>Latitude: 5.0268<br>Longitude: -74.0268","<b>Manizales<\/b><br>Latitude: 5.0687<br>Longitude: -75.5176","<b>Medellín<\/b><br>Latitude: 6.2442<br>Longitude: -75.5812","<b>Neiva<\/b><br>Latitude: 2.9273<br>Longitude: -75.2819","<b>Pamplona<\/b><br>Latitude: 7.3753<br>Longitude: -72.6498","<b>Pitalito<\/b><br>Latitude: 1.8479<br>Longitude: -76.054","<b>Santa Marta<\/b><br>Latitude: 11.2404<br>Longitude: -74.2095","<b>Vijes<\/b><br>Latitude: 3.6997<br>Longitude: -76.4358"],null,null,null,["Antioquia","Bogotá","Bucaramanga","Cali","Caloto","Cartagena","Corinto","Cundinamarca","Manizales","Medellín","Neiva","Pamplona","Pitalito","Santa Marta","Vijes"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Light","Dark","Satellite"],[],{"collapsed":false,"autoZIndex":true,"position":"topright"}]},{"method":"addLegend","args":[{"colors":["#003E42"],"labels":["Sample Location"],"na_color":null,"na_label":"NA","opacity":0.7,"position":"bottomright","type":"unknown","title":null,"extra":null,"layerId":null,"className":"info legend","group":null}]}],"setView":[[4.5709,-74.29730000000001],6,[]],"limits":{"lat":[1.8479,11.2404],"lng":[-76.532,-72.6498]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>The geographical distribution spans from the Caribbean coast (Santa Marta, Cartagena) to the interior regions (Bogotá, Medellín) and southern territories (Pitalito), representing samples from various growing conditions and cultivation practices across Colombia.</p>
@@ -197,23 +200,23 @@ ul.task-list li input[type="checkbox"] {
 <p>The average THC content was found to be 12.8%, with the middle half of samples ranging from 10.3% to 15.3%. In contrast, CBD levels were much lower, averaging just 0.9%, with most samples falling between 0.2% and 1.1%.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="jxizsbwuhx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#jxizsbwuhx table {
+<div id="hpochgdjbl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hpochgdjbl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#jxizsbwuhx thead, #jxizsbwuhx tbody, #jxizsbwuhx tfoot, #jxizsbwuhx tr, #jxizsbwuhx td, #jxizsbwuhx th {
+#hpochgdjbl thead, #hpochgdjbl tbody, #hpochgdjbl tfoot, #hpochgdjbl tr, #hpochgdjbl td, #hpochgdjbl th {
   border-style: none;
 }
 
-#jxizsbwuhx p {
+#hpochgdjbl p {
   margin: 0;
   padding: 0;
 }
 
-#jxizsbwuhx .gt_table {
+#hpochgdjbl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -239,12 +242,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#jxizsbwuhx .gt_caption {
+#hpochgdjbl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#jxizsbwuhx .gt_title {
+#hpochgdjbl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -256,7 +259,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#jxizsbwuhx .gt_subtitle {
+#hpochgdjbl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -268,7 +271,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#jxizsbwuhx .gt_heading {
+#hpochgdjbl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -280,13 +283,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#jxizsbwuhx .gt_bottom_border {
+#hpochgdjbl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jxizsbwuhx .gt_col_headings {
+#hpochgdjbl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -301,7 +304,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#jxizsbwuhx .gt_col_heading {
+#hpochgdjbl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -321,7 +324,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#jxizsbwuhx .gt_column_spanner_outer {
+#hpochgdjbl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -333,15 +336,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#jxizsbwuhx .gt_column_spanner_outer:first-child {
+#hpochgdjbl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jxizsbwuhx .gt_column_spanner_outer:last-child {
+#hpochgdjbl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jxizsbwuhx .gt_column_spanner {
+#hpochgdjbl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -353,11 +356,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#jxizsbwuhx .gt_spanner_row {
+#hpochgdjbl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#jxizsbwuhx .gt_group_heading {
+#hpochgdjbl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -383,7 +386,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#jxizsbwuhx .gt_empty_group_heading {
+#hpochgdjbl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -398,15 +401,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#jxizsbwuhx .gt_from_md > :first-child {
+#hpochgdjbl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jxizsbwuhx .gt_from_md > :last-child {
+#hpochgdjbl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jxizsbwuhx .gt_row {
+#hpochgdjbl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -425,7 +428,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#jxizsbwuhx .gt_stub {
+#hpochgdjbl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -438,7 +441,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#jxizsbwuhx .gt_stub_row_group {
+#hpochgdjbl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -452,15 +455,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#jxizsbwuhx .gt_row_group_first td {
+#hpochgdjbl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#jxizsbwuhx .gt_row_group_first th {
+#hpochgdjbl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#jxizsbwuhx .gt_summary_row {
+#hpochgdjbl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -470,16 +473,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#jxizsbwuhx .gt_first_summary_row {
+#hpochgdjbl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#jxizsbwuhx .gt_first_summary_row.thick {
+#hpochgdjbl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#jxizsbwuhx .gt_last_summary_row {
+#hpochgdjbl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -489,7 +492,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#jxizsbwuhx .gt_grand_summary_row {
+#hpochgdjbl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -499,7 +502,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#jxizsbwuhx .gt_first_grand_summary_row {
+#hpochgdjbl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -509,7 +512,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#jxizsbwuhx .gt_last_grand_summary_row_top {
+#hpochgdjbl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -519,11 +522,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#jxizsbwuhx .gt_striped {
+#hpochgdjbl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jxizsbwuhx .gt_table_body {
+#hpochgdjbl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -532,7 +535,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#jxizsbwuhx .gt_footnotes {
+#hpochgdjbl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -546,7 +549,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#jxizsbwuhx .gt_footnote {
+#hpochgdjbl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -555,7 +558,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#jxizsbwuhx .gt_sourcenotes {
+#hpochgdjbl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -569,7 +572,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#jxizsbwuhx .gt_sourcenote {
+#hpochgdjbl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -577,72 +580,72 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#jxizsbwuhx .gt_left {
+#hpochgdjbl .gt_left {
   text-align: left;
 }
 
-#jxizsbwuhx .gt_center {
+#hpochgdjbl .gt_center {
   text-align: center;
 }
 
-#jxizsbwuhx .gt_right {
+#hpochgdjbl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jxizsbwuhx .gt_font_normal {
+#hpochgdjbl .gt_font_normal {
   font-weight: normal;
 }
 
-#jxizsbwuhx .gt_font_bold {
+#hpochgdjbl .gt_font_bold {
   font-weight: bold;
 }
 
-#jxizsbwuhx .gt_font_italic {
+#hpochgdjbl .gt_font_italic {
   font-style: italic;
 }
 
-#jxizsbwuhx .gt_super {
+#hpochgdjbl .gt_super {
   font-size: 65%;
 }
 
-#jxizsbwuhx .gt_footnote_marks {
+#hpochgdjbl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#jxizsbwuhx .gt_asterisk {
+#hpochgdjbl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#jxizsbwuhx .gt_indent_1 {
+#hpochgdjbl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#jxizsbwuhx .gt_indent_2 {
+#hpochgdjbl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#jxizsbwuhx .gt_indent_3 {
+#hpochgdjbl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#jxizsbwuhx .gt_indent_4 {
+#hpochgdjbl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#jxizsbwuhx .gt_indent_5 {
+#hpochgdjbl .gt_indent_5 {
   text-indent: 25px;
 }
 
-#jxizsbwuhx .katex-display {
+#hpochgdjbl .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#jxizsbwuhx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#hpochgdjbl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
