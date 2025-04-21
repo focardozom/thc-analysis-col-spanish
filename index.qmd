@@ -3,16 +3,10 @@ title: "THC and CBD Analysis"
 author:
   - name: Flower Power
     email: hola@flowerpower.com
-    affiliations:
-      - name: Flower Power
-        address: Bogotá
-        city: Bogotá
+  - name: CENICS - Centro de Innovación, Cultura y Sociedad
+    email: info@cenics.co
   - name: Figura 01
     email: hola@figura01.com
-    affiliations:
-      - name: Figura 01
-        address: Bogotá
-        city: Bogotá
 date: "`r Sys.Date()`"
 date-format: long
 subtitle: "Data collection from Flower Power"
