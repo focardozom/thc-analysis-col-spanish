@@ -28,7 +28,7 @@ warning: false
 
 # Introduction
 
-We explore data from 533 cannabis samples collected between September 2020 and October 2024. (add more details about the data, who collected them, why people would want to know the THC and CBD levels of a sample, who were the producers, etc.) We examine what their distributions look like, and how the two compounds relate to each other.
+We explore data from 533 cannabis samples collected between September 2020 and October 2024. These samples were collected from 15 different locations across the country, including Antioquia, Bogotá, Santander, Valle del Cauca, Cauca, Bolivar, Cundinamarca, Caldas, Antioquia, Norte de Santander, Magdalena, and Huila. We examine what their distributions look like, and how the two compounds relate to each other.
 
 ```{r}
 library(tidyverse)
