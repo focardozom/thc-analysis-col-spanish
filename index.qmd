@@ -87,7 +87,7 @@ power_data <- read_excel("GC-Results-Flower Power-Ground.xlsx") |>
 
 # Tiempo de recolección de datos
 
-Nuestros datos abarcan un período desde finales de 2020 hasta finales de 2024.
+Nuestros datos fueron recolectados entre septiembre de 2020 y octubre de 2024.
 
 
 ```{r}
