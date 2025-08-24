@@ -1,0 +1,683 @@
+---
+title: "Análisis de THC y CBD"
+author:
+  - name: Flower Power
+    email: hola@flowerpower.com
+  - name: CENICS - Centro de Innovación, Cultura y Sociedad
+    email: info@cenics.co
+  - name: Figura 01
+    email: hola@figura01.com
+date: "`r Sys.Date()`"
+date-format: long
+subtitle: "Recolección de datos de Flower Power"
+filters:
+  - shinylive
+format:
+  html: 
+    toc: true
+    toc-title: "Tabla de Contenidos"
+    theme: cosmo
+    css: custom.css
+    mainfont: "Montserrat"
+    titlefont: "Playfair Display"
+    monofont: "Fira Code"
+echo: false
+warning: false
+
+---
+
+# Introducción
+
+Exploramos datos de 533 muestras de cannabis recolectadas entre septiembre de 2020 y octubre de 2024. Estas muestras fueron recolectadas en 15 ubicaciones diferentes a lo largo del país, incluyendo Antioquia, Bogotá, Santander, Valle del Cauca, Cauca, Bolívar, Cundinamarca, Caldas, Antioquia, Norte de Santander, Magdalena y Huila. Examinamos cómo se ven sus distribuciones y cómo se relacionan los dos compuestos entre sí.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(skimr)
+library(showtext)
+library(janitor)
+library(shiny)
+library(ggplot2)
+library(shinylive)
+
+# Add Google Fonts - using Playfair Display for headings and Lato for body text
+font_add_google("Playfair Display", "playfair")
+font_add_google("Lato", "lato")
+showtext_auto()
+
+# Define document background color to match CSS
+doc_bg_color <- "#f8f9fa"
+
+# Create a custom theme that matches document background
+transparent_theme <- function() {
+    theme_minimal() +
+        theme(
+            panel.background = element_rect(fill = doc_bg_color, color = NA),
+            plot.background = element_rect(fill = doc_bg_color, color = NA),
+            text = element_text(family = "lato"),
+            plot.title = element_text(family = "playfair", face = "bold", size = 14),
+            axis.title = element_text(family = "playfair", size = 12),
+            axis.text = element_text(family = "lato", size = 12)
+        )
+}
+```
+
+```{r}
+power_data <- read_excel("GC-Results-Flower Power-Ground.xlsx") |>
+    clean_names() |>
+    mutate(thc_total = case_when(
+        thc_total == "< 0,2" ~ "0,2",
+        TRUE ~ thc_total
+    )) |>
+    mutate(thc_total = str_replace_all(thc_total, "<", "")) |>
+    mutate(thc_total = str_replace_all(thc_total, ",", ".")) |>
+    mutate(thc_total_num = as.numeric(thc_total)) |>
+    mutate(cbd_total = case_when(
+        cbd_total == "< 0,2" ~ "0,2",
+        cbd_total == "<2,0 cuantas?" ~ "0,2",
+        TRUE ~ cbd_total
+    )) |>
+    mutate(cbd_total = str_replace_all(cbd_total, "<", "")) |>
+    mutate(cbd_total = str_replace_all(cbd_total, ",", ".")) |>
+    mutate(cbd_total_num = as.numeric(cbd_total)) |>
+    mutate(Date = as.POSIXct(time, format = "%m/%d/%Y %I:%M:%S %p")) |>
+    filter(thc_total_num >= 4)
+
+```
+
+# Tiempo de recolección de datos
+
+Nuestros datos fueron recolectados entre septiembre de 2020 y octubre de 2024.
+
+
+```{r}
+power_data |>
+    mutate(Month = lubridate::floor_date(Date, unit = "month")) |>
+    count(Month) |>
+    mutate(Month = as.Date(Month)) |>
+    ggplot(aes(x = Month, y = n)) +
+    geom_bar(stat = "identity", fill = "#003E42ff", alpha = 0.6) +
+    transparent_theme() +
+    labs(
+        title = "Muestras por Mes",
+        x = "Mes",
+        y = "Número de Muestras"
+    ) +
+    scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+    theme(
+        axis.text.x = element_text(family = "lato", size = 8, angle = 90),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()
+    )
+
+ggsave("images/thc_time_series.png", width = 6, height = 4, dpi = 300)
+```
+
+# THC por tiempo de recolección de datos
+
+Cuando observamos los niveles de THC a lo largo del tiempo, notamos que las muestras recolectadas en el año más reciente tienden a tener concentraciones más altas de THC. 
+
+```{r}
+power_data |>
+    ggplot(aes(x = Date, y = thc_total_num)) +
+    geom_point(color = "#003E42ff", alpha = 0.6) +
+    geom_smooth(color = "#EEC99Bff", fill = "#EEC99Bff", alpha = 0.3) +
+    transparent_theme() +
+    labs(
+        title = "Niveles de THC a lo largo del tiempo de recolección de datos",
+        x = "Fecha",
+        y = "THC (%)"
+    ) +
+    theme(
+        strip.background = element_rect(fill = "#EEC99Bff"),
+        strip.text = element_text(
+            color = "black", family = "playfair",
+            face = "bold", size = 12
+        )
+    )
+ggsave("images/thc_time_series.png", width = 6, height = 4, dpi = 300)
+```
+
+Esta tendencia puede interpretarse como un aumento en los niveles de THC a lo largo del tiempo, pero es importante considerar posibles sesgos de muestreo.^[Si nuestras fuentes de datos se mantuvieron consistentes durante todo el período de recolección, podríamos atribuir esto a cambios reales en las prácticas de cultivo de cannabis. Sin embargo, es posible que nuestras muestras más recientes representen desproporcionadamente a productores con capacidades de cultivo avanzadas y mayores recursos, quienes pueden lograr concentraciones más altas de THC.]
+
+# Ubicaciones de las Muestras
+
+Nuestras muestras fueron recolectadas en 15 ubicaciones diferentes a lo largo de Colombia, representando diversas regiones geográficas desde áreas costeras hasta territorios del interior. El mapa interactivo a continuación te permite explorar las ubicaciones de muestreo - puedes hacer zoom, desplazarte y hacer clic en los marcadores para ver detalles de la ubicación.
+
+```{r}
+# Load required packages
+library(leaflet)
+library(leaflet.extras) # For awesome icons
+
+# Create a data frame with sample locations and their coordinates
+sample_locations <- data.frame(
+    city = c(
+        "Antioquia", "Bogotá", "Bucaramanga", "Cali", "Caloto",
+        "Cartagena", "Corinto", "Cundinamarca", "Manizales", "Medellín",
+        "Neiva", "Pamplona", "Pitalito", "Santa Marta", "Vijes"
+    ),
+    lat = c(
+        6.2442, 4.7110, 7.1254, 3.4516, 3.0371,
+        10.3932, 3.1716, 5.0268, 5.0687, 6.2442,
+        2.9273, 7.3753, 1.8479, 11.2404, 3.6997
+    ),
+    lon = c(
+        -75.5742, -74.0721, -73.1198, -76.5320, -76.4241,
+        -75.4832, -76.2597, -74.0268, -75.5176, -75.5812,
+        -75.2819, -72.6498, -76.0540, -74.2095, -76.4358
+    )
+)
+
+# Create custom icon using Font Awesome cannabis leaf icon
+cannabisIcon <- makeAwesomeIcon(
+    icon = "cannabis",
+    markerColor = "green",
+    iconColor = "#003E42ff", # Using your theme's dark green color
+    library = "fa"
+)
+
+# Create the interactive map
+leaflet(sample_locations) |>
+    # Add different map tile layers that users can switch between
+    addProviderTiles("CartoDB.Positron", group = "Light") |>
+    addProviderTiles("CartoDB.DarkMatter", group = "Dark") |>
+    addProviderTiles("Esri.WorldImagery", group = "Satellite") |>
+    # Set the initial view to center on Colombia
+    setView(lng = -74.2973, lat = 4.5709, zoom = 6) |>
+    # Add markers for each location
+    addAwesomeMarkers(
+        ~lon, ~lat,
+        popup = ~ paste0(
+            "<b>", city, "</b><br>",
+            "Latitude: ", round(lat, 4), "<br>",
+            "Longitude: ", round(lon, 4)
+        ),
+        label = ~city,
+        icon = cannabisIcon
+    ) |>
+    # Add layer control to switch between map styles
+    addLayersControl(
+        baseGroups = c("Light", "Dark", "Satellite"),
+        options = layersControlOptions(collapsed = FALSE)
+    ) |>
+    # Add a legend
+    addLegend(
+        position = "bottomright",
+        colors = c("#003E42"),
+        labels = c("Ubicación de Muestra"),
+        opacity = 0.7
+    )
+```
+
+La distribución geográfica abarca desde la costa del Caribe (Santa Marta, Cartagena) hasta las regiones del interior (Bogotá, Medellín) y territorios del sur (Pitalito), representando muestras de diversas condiciones de crecimiento y prácticas de cultivo a lo largo de Colombia.
+
+
+# CBD por tiempo de recolección de datos
+
+Los niveles de CBD muestran un patrón similar con pequeñas disminuciones a lo largo del tiempo.
+
+```{r}
+power_data |>
+    ggplot(aes(x = Date, y = cbd_total_num)) +
+    geom_point(color = "#003E42ff", alpha = 0.6) +
+    geom_smooth(color = "#EEC99Bff", fill = "#EEC99Bff", alpha = 0.3) +
+    transparent_theme() +
+    labs(
+        title = "Evolución del CBD a lo largo del tiempo",
+        x = "Fecha",
+        y = "CBD (%)"
+    )
+```
+
+# Distribución de THC y CBD
+
+Se encontró que el contenido promedio de THC fue del 12.8%, con la mitad central de las muestras variando entre 10.3% y 15.3%. En contraste, los niveles de CBD fueron mucho más bajos, promediando solo 0.9%, con la mayoría de las muestras cayendo entre 0.2% y 1.1%. 
+
+```{r}
+library(gtsummary)
+
+power_data |>
+    select(thc_total_num, cbd_total_num) |>
+    rename(THC = thc_total_num, CBD = cbd_total_num) |>
+    tbl_summary(
+        type = list(everything() ~ "continuous"),
+        statistic = list(all_continuous() ~ "{mean}% ({p25}% - {p75}%) min {min} max {max}"),
+        digits = list(all_continuous() ~ 1)
+    )
+
+ggsave("images/thc_cbd_distribution.png", width = 3, height = 3, dpi = 300)
+```
+
+
+El siguiente gráfico muestra la distribución de los niveles de THC y CBD.
+
+```{r}
+
+power_data |>
+    select(thc_total_num, cbd_total_num) |>
+    pivot_longer(cols = everything()) |>
+    mutate(name = case_when(
+        name == "thc_total_num" ~ "THC",
+        name == "cbd_total_num" ~ "CBD",
+        TRUE ~ name
+    )) |>
+    ggplot(aes(x = value, color = name, fill = name)) +
+    geom_density() +
+    facet_wrap(~name, ncol = 1, scales = "free") +
+    transparent_theme() +
+    labs(
+        title = "Distribución de CBD y THC",
+        x = "Concentración (%)",
+        y = "Densidad"
+    ) +
+    scale_color_manual(values = c("CBD" = "#003E42ff", "THC" = "#003E42ff")) +
+    theme(legend.position = "none") +
+    scale_fill_manual(values = c("THC" = "#003E42ff", "CBD" = "#EEC99Bff")) +
+    theme(
+        strip.background = element_rect(fill = "#EEC99Bff"),
+        strip.text = element_text(
+            color = "black", family = "playfair",
+            face = "bold", size = 12
+        )
+    )
+
+ggsave("images/thc_cbd_distribution.png", width = 3, height = 3, dpi = 300)
+
+```
+
+## Distribución de CBD
+
+Los datos de CBD están altamente sesgados hacia la derecha. Esto significa que la mayoría de las muestras tienen niveles muy bajos de CBD, con un pico agudo cerca de cero y una cola larga que se extiende hacia valores más altos. En términos simples, casi todas las muestras tienen poco CBD, y solo unas pocas muestran cantidades más altas.
+
+## Distribución de THC
+
+En contraste, los niveles de THC forman una curva más en forma de campana (o distribuida normalmente). La mayoría de las muestras se agrupan alrededor del rango medio (alrededor del 12.8%), con menos muestras teniendo niveles extremadamente bajos o altos. Esto indica que las concentraciones de THC son más consistentes entre las muestras comparado con el CBD.
+
+# Curva de THC para comparación
+
+::: {.panel-tabset}
+
+## Distribución de THC
+
+El siguiente gráfico visualiza la distribución de concentraciones de THC en muestras de cannabis. La curva muestra con qué frecuencia ocurren diferentes porcentajes de THC en nuestro conjunto de datos. Hemos marcado puntos clave en la curva:
+
+- Las líneas verticales punteadas indican el percentil 25 (Q1), la media y el percentil 75 (Q3)
+- Q1 (percentil 25): 25% de las muestras tienen niveles de THC por debajo de este valor
+- Media: La concentración promedio de THC en todas las muestras
+- Q3 (percentil 75): 75% de las muestras tienen niveles de THC por debajo de este valor
+
+Esta visualización te ayuda a entender dónde cae un porcentaje específico de THC dentro de la distribución general de potencia de cannabis en nuestro conjunto de datos.
+
+```{r}
+power_data |>
+    select(thc_total_num, cbd_total_num) |>
+    pivot_longer(cols = everything()) |>
+    mutate(name = case_when(
+        name == "thc_total_num" ~ "THC",
+        name == "cbd_total_num" ~ "CBD",
+        TRUE ~ name
+    )) |>
+    filter(name == "THC") |>
+    ggplot(aes(x = value, color = name, fill = name)) +
+    geom_density(alpha = 0.3) +
+    geom_vline(aes(xintercept = quantile(value, 0.25)),
+        linetype = "dashed", color = "#003E42ff", alpha = 0.7
+    ) +
+    geom_vline(aes(xintercept = quantile(value, 0.75)),
+        linetype = "dashed", color = "#003E42ff", alpha = 0.7
+    ) +
+    geom_vline(aes(xintercept = mean(value)),
+        linetype = "dashed", color = "#003E42ff"
+    ) +
+    annotate("text",
+        x = c(
+            quantile(power_data$thc_total_num, 0.25),
+            quantile(power_data$thc_total_num, 0.75)
+        ),
+        y = c(0, 0),
+        label = c("Q1: 25%", "Q3: 75%"),
+        vjust = -0.5,
+        family = "lato",
+        color = "#003E42ff"
+    ) +
+    annotate("text",
+        x = Inf, y = Inf,
+        label = sprintf(
+            "Mean: %.1f%%\nSD: ±%.1f%%\nQ1: %.1f%%\nQ3: %.1f%%",
+            mean(power_data$thc_total_num),
+            sd(power_data$thc_total_num),
+            quantile(power_data$thc_total_num, 0.25),
+            quantile(power_data$thc_total_num, 0.75)
+        ),
+        hjust = 1.1, vjust = 1.1,
+        family = "lato"
+    ) +
+    transparent_theme() +
+    labs(
+        title = "",
+        x = "THC (%)",
+        y = "Densidad",
+        caption = "Si tu muestra tiene 15.4% de THC, se sitúa justo por encima del percentil 75. \nEn otras palabras, contiene más THC que aproximadamente tres cuartos \n de todas las muestras en el conjunto de datos, ubicándola entre el \n 25% superior con los niveles más altos de THC."
+    ) +
+    scale_color_manual(values = c("THC" = "#003E42ff")) +
+    scale_fill_manual(values = c("THC" = "#003E42ff")) +
+    theme(
+        legend.position = "none",
+        plot.caption = element_text(hjust = 0, size = 10)
+    )
+
+ggsave("images/thc_distribution.png", width = 3, height = 3, dpi = 600)
+
+```
+
+```{r eval = FALSE}
+
+power_data |>
+    select(cbd_total_num) |>
+    ggplot(aes(x = cbd_total_num)) +
+    geom_histogram(bins = 30, fill = "skyblue", color = "black") +
+    scale_x_log10() +
+    labs(
+        title = "Distribución de CBD (Eje X en escala logarítmica)",
+        x = "CBD (escala logarítmica)",
+        y = "Densidad (escala logarítmica)"
+    )
+
+power_data |>
+    select(cbd_total_num) |>
+    ggplot(aes(x = cbd_total_num)) +
+    geom_density(fill = "orange", alpha = 0.5) +
+    scale_x_log10() +
+    scale_y_log10() + # This makes the y-axis log scale too
+    labs(
+        title = "Distribución de CBD en escala logarítmica",
+        x = "CBD (escala logarítmica)",
+        y = "Densidad (escala logarítmica)"
+    )
+```
+
+## Distribución Interactiva de THC
+
+```{shinylive-r}
+#| standalone: true
+#| components: [viewer]
+#| layout: vertical
+#| viewerHeight: 700
+library(shiny)
+library(ggplot2)
+
+# Calculate statistics from the data
+MEAN_THC <- 12.8
+SD_THC <- 3.2
+Q1_THC <- 10.3
+Q3_THC <- 15.3
+
+ui <- fluidPage(
+    titlePanel("Compara tu Nivel de THC"),
+    sidebarLayout(
+        sidebarPanel(
+            numericInput("thc_value",
+                "Ingresa el % de THC de tu muestra:",
+                value = MEAN_THC, # Set default to mean
+                min = 4,
+                max = 30,
+                step = 0.1
+            ),
+            textOutput("percentile_text")
+        ),
+        mainPanel(
+            plotOutput("thc_plot", height = "400px")
+        )
+    )
+)
+
+server <- function(input, output) {
+    # Generate distribution data
+    x <- seq(4, 25, length.out = 1000)
+    density_data <- data.frame(
+        x = x,
+        y = dnorm(x, mean = MEAN_THC, sd = SD_THC)
+    )
+
+    # Reactive value for validated THC input
+    valid_thc <- reactive({
+        if (is.null(input$thc_value) || is.na(input$thc_value)) {
+            return(MEAN_THC) # Return mean if input is null or NA
+        }
+        return(input$thc_value)
+    })
+
+    output$thc_plot <- renderPlot({
+        # Use validated THC value
+        thc_value <- valid_thc()
+
+        ggplot() +
+            # Plot density curve
+            geom_line(
+                data = density_data, aes(x = x, y = y),
+                color = "#003E42ff", size = 1
+            ) +
+            geom_area(
+                data = density_data, aes(x = x, y = y),
+                fill = "#003E42ff", alpha = 0.3
+            ) +
+            # Add reference lines
+            geom_vline(
+                xintercept = Q1_THC,
+                linetype = "dashed", color = "#003E42ff", alpha = 0.7
+            ) +
+            geom_vline(
+                xintercept = Q3_THC,
+                linetype = "dashed", color = "#003E42ff", alpha = 0.7
+            ) +
+            geom_vline(
+                xintercept = MEAN_THC,
+                linetype = "dashed", color = "#003E42ff"
+            ) +
+            # Add user's THC value (only if valid)
+            geom_vline(
+                xintercept = thc_value,
+                color = "#EEC99Bff", size = 1.5
+            ) +
+            # Add labels
+            annotate("text",
+                x = c(Q1_THC, Q3_THC),
+                y = c(0, 0),
+                label = c("Q1: 25%", "Q3: 75%"),
+                vjust = -0.5,
+                color = "#003E42ff"
+            ) +
+            # Customize theme
+            theme_minimal() +
+            labs(
+                title = "Distribución de THC con tu Muestra",
+                x = "THC (%)",
+                y = "Densidad"
+            ) +
+            theme(
+                text = element_text(family = "sans-serif"),
+                plot.title = element_text(face = "bold"),
+                panel.background = element_rect(fill = "#f8f9fa", color = NA),
+                plot.background = element_rect(fill = "#f8f9fa", color = NA)
+            )
+    })
+
+    output$percentile_text <- renderText({
+        # Use validated THC value
+        value <- valid_thc()
+
+        if (is.null(value) || is.na(value)) {
+            return("Por favor ingresa un valor válido de THC")
+        }
+
+        if (value < Q1_THC) {
+            sprintf(
+                "El nivel de THC de tu muestra (%.1f%%) está por debajo del percentil 25 (Q1: %.1f%%)",
+                value, Q1_THC
+            )
+        } else if (value > Q3_THC) {
+            sprintf(
+                "El nivel de THC de tu muestra (%.1f%%) está por encima del percentil 75 (Q3: %.1f%%)",
+                value, Q3_THC
+            )
+        } else {
+            sprintf(
+                "El nivel de THC de tu muestra (%.1f%%) está entre los percentiles 25 y 75 (Q1: %.1f%%, Q3: %.1f%%)",
+                value, Q1_THC, Q3_THC
+            )
+        }
+    })
+}
+
+shinyApp(ui, server)
+```
+
+Esta visualización interactiva:
+
+1. Muestra la curva de distribución de THC
+2. Muestra líneas de referencia para Q1 (percentil 25), mediana y Q3 (percentil 75)
+3. Te permite ingresar el porcentaje de THC de tu muestra
+4. Muestra tu valor como una línea vertical color ámbar en el gráfico
+5. Proporciona retroalimentación de texto sobre dónde cae tu muestra en la distribución
+
+
+:::
+
+
+
+
+# Relación THC/CBD
+
+Nuestro análisis muestra que el THC y el CBD tienen una relación inversa - cuando uno sube, el otro tiende a bajar. Este patrón es más claro en muestras con menos del 10% de THC. En muestras con mayor contenido de THC (por encima del 10%), esta relación inversa aún existe pero se vuelve más débil.
+
+```{r}
+power_data |>
+    select(thc_total_num, cbd_total_num) |>
+    filter(thc_total_num >= 4) |>
+    rename(THC = thc_total_num, CBD = cbd_total_num) |>
+    ggplot(aes(x = THC, y = CBD, color = "THC", fill = "THC")) +
+    geom_point() +
+    geom_smooth() +
+    transparent_theme() +
+    labs(
+        title = "Correlación entre THC y CBD",
+        x = "THC (%)",
+        y = "CBD (%)"
+    ) +
+    scale_color_manual(values = c("CBD" = "#003E42ff", "THC" = "#003E42ff")) +
+    theme(legend.position = "none") +
+    scale_fill_manual(values = c("THC" = "#003E42ff", "CBD" = "#EEC99Bff")) +
+    theme(
+        strip.background = element_rect(fill = "#EEC99Bff"),
+        strip.text = element_text(
+            color = "black", family = "playfair",
+            face = "bold", size = 12
+        )
+    )
+
+ggsave("images/thc_cbd_relationship.png", width = 3, height = 3, dpi = 300)
+
+```
+
+```{r}
+library(corrr)
+# Calculate correlation and save it
+thc_cbd_corr <- power_data |>
+    select(thc_total_num, cbd_total_num) |>
+    filter(thc_total_num >= 10) |>
+    rename(THC = thc_total_num, CBD = cbd_total_num) |>
+    correlate() |>
+    shave() |>
+    filter(!is.na(THC)) |>
+    pull(THC)
+
+```
+
+Cuando observamos la correlación entre THC y CBD usando las muestras con más del 10% de THC, vemos que la correlación negativa es `r round(thc_cbd_corr, 2)` lo cual indica una relación negativa entre los dos compuestos pero no es muy fuerte.^[En el análisis de correlación, valores entre 0 y ±0.3 se consideran débiles, ±0.3 a ±0.7 moderados, y ±0.7 a ±1.0 fuertes. Nuestra correlación cae en el rango débil a moderado, sugiriendo que la relación no es fuerte.]
+
+```{r eval = FALSE}
+power_data |>
+    select(thc_total_num, cbd_total_num) |>
+    rename(THC = thc_total_num, CBD = cbd_total_num) |>
+    mutate(ratio = THC / CBD) |>
+    mutate(type = "ratio") |>
+    ggplot(aes(x = ratio, color = type, fill = type)) +
+    geom_density() +
+    theme_minimal() +
+    labs(
+        title = "Distribución ratio THC/CBD",
+        x = "THC/CBD",
+        y = ""
+    ) +
+    scale_color_manual(values = "#003E42ff") +
+    scale_fill_manual(values = "#EEC99Bff") +
+    theme(legend.position = "none") +
+    theme(
+        strip.background = element_rect(fill = "#EEC99Bff"),
+        strip.text = element_text(
+            color = "black", family = "roboto",
+            face = "bold", size = 12
+        ),
+        axis.text = element_text(family = "roboto", size = 12),
+        axis.title = element_text(family = "roboto", size = 12),
+        plot.title = element_text(family = "roboto", size = 12)
+    )
+
+# ggsave("mayor_4_thc_cbd_ratio_distribution.png", width = 3, height = 3, dpi = 300)
+
+
+```
+
+
+```{r eval = FALSE}
+power_data |>
+    select(thc_total_num, cbd_total_num) |>
+    filter(thc_total_num >= 4) |>
+    rename(THC = thc_total_num, CBD = cbd_total_num) |>
+    mutate(Potency = THC + CBD) |>
+    mutate(type = "potency") |>
+    ggplot(aes(x = Potency, color = type, fill = type)) +
+    geom_density() +
+    theme_minimal() +
+    labs(
+        title = "Distribución de la potencia THC/CBD",
+        x = "Potencia",
+        y = ""
+    ) +
+    scale_color_manual(values = "black") +
+    scale_fill_manual(values = "green") +
+    theme(legend.position = "none") +
+    theme(
+        strip.background = element_rect(fill = "#EEC99Bff"),
+        strip.text = element_text(
+            color = "black", family = "roboto",
+            face = "bold", size = 12
+        ),
+        axis.text = element_text(family = "roboto", size = 12),
+        axis.title = element_text(family = "roboto", size = 12),
+        plot.title = element_text(family = "roboto", size = 12)
+    )
+
+ggsave("images/thc_cbd_potency_distribution.png", width = 3, height = 3, dpi = 300)
+```
+
+# Resumen de Hallazgos
+
+Nuestro análisis de 533 muestras de cannabis recolectadas entre 2020 y 2024 revela varias percepciones clave:
+
+## Contenido de THC
+- **THC Promedio:** 12.8%, con la mitad central de las muestras variando entre 10.3% y 15.3%
+- Los niveles de THC siguen una distribución relativamente normal, indicando consistencia entre las muestras
+- Hay una tendencia ascendente notable en el contenido de THC en muestras más recientes
+
+## Contenido de CBD
+- **CBD Promedio:** 0.9%, con la mayoría de las muestras conteniendo entre 0.2% y 1.1%
+- La distribución de CBD está altamente sesgada hacia la derecha, con la mayoría de las muestras teniendo niveles muy bajos
+- Los niveles de CBD muestran una ligera tendencia descendente durante el período de recolección
+
+## Relación Entre THC y CBD
+- Existe una relación inversa entre los niveles de THC y CBD
+- Esta correlación negativa es más fuerte cuando el THC está por debajo del 10%
+- A medida que los niveles de THC aumentan más allá del 10%, la relación se vuelve menos pronunciada
+
+Estos hallazgos destacan la predominancia del cannabis alto en THC y bajo en CBD en las muestras analizadas, con una tendencia hacia el aumento de la potencia de THC a lo largo del tiempo. Esta información puede ser valiosa para consumidores, productores y reguladores para entender el panorama actual del mercado de cannabis.

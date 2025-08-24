@@ -1,0 +1,63 @@
+/* Custom styling for the document */
+
+/* Set background color for the entire document */
+body {
+  background-color: #f8f9fa;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.6;
+}
+
+/* Style headings with Playfair Display font */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  color: #003E42;
+}
+
+/* Style the main title */
+.title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #003E42;
+  border-bottom: 2px solid #EEC99B;
+  padding-bottom: 10px;
+}
+
+/* Style paragraphs with Montserrat */
+p {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Style code blocks */
+pre {
+  background-color: #f1f3f5;
+  border-left: 4px solid #EEC99B;
+}
+
+/* Style tables */
+table {
+  background-color: white;
+  border: 1px solid #dee2e6;
+}
+
+/* Style links */
+a {
+  color: #003E42;
+}
+
+a:hover {
+  color: #EEC99B;
+}
+
+/* Make sure plots have transparent backgrounds */
+.plot-container {
+  background-color: transparent !important;
+}
+
+.ggplot {
+  background-color: transparent !important;
+}
+
+.figure {
+  background-color: transparent !important;
+} 
